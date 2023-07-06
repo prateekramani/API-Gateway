@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+const bcrypt = require('bcrypt');
+const { ServerConfig } = require("../config")
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -25,13 +27,21 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate : {
-        len : [3 , 50]
+      validate: {
+        len: [3, 50]
       }
     }
   }, {
     sequelize,
     modelName: 'User',
   });
+
+  User.beforeCreate(function encrypt(user) {
+    // const salt = bcrypt.genSaltSync(saltRounds); //bigger the salt round more powerful will be the encryption
+    const salt = +ServerConfig.SALT_ROUNDS;
+    const encryptedPassword = bcrypt.hashSync(user.password , salt);
+    user.password = encryptedPassword;
+  })
+
   return User;
 };
