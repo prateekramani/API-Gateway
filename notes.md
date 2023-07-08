@@ -124,4 +124,4 @@ New seed was created at /Users/prateekramani/javascript/17/NodeJS-Base-Template/
 
 
  `npx sequelize db:seed:undo:all` - Run Async down function
- 
+
