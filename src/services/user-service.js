@@ -3,6 +3,7 @@ const AppError = require("../utils/errors/app-error")
 const userRepository = new UserRepository();
 const { StatusCodes } = require("http-status-codes");
 const { auth } = require("../utils/common");
+const { TokenExpiredError } = require("jsonwebtoken");
 
 
 async function create(data) {
@@ -59,6 +60,8 @@ async function isAuthenticated(token) {
         if (error instanceof AppError) throw error;
         if (error.name == "JsonWebTokenError")
             throw new AppError("Invalid JWT Token", StatusCodes.BAD_REQUEST);
+        if (error.name == "TokenExpiredError")
+        throw new AppError("JWT Token Expired", StatusCodes.BAD_REQUEST);
 
         throw new AppError("Something Went Wrong", StatusCodes.INTERNAL_SERVER_ERROR);
     }
