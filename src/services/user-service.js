@@ -1,14 +1,18 @@
-const { UserRepository } = require("../repositories");
+const { UserRepository , RoleRepository} = require("../repositories");
 const AppError = require("../utils/errors/app-error")
-const userRepository = new UserRepository();
 const { StatusCodes } = require("http-status-codes");
-const { auth } = require("../utils/common");
+const { auth , enums } = require("../utils/common");
 const { TokenExpiredError } = require("jsonwebtoken");
 
 
+const userRepository = new UserRepository();
+const roleRepository = new RoleRepository();
+
 async function create(data) {
     try {
-        const user = await userRepository.create(data)
+        const user = await userRepository.create(data);
+        const role = await roleRepository.getRoleByName(enums.USER_ROLES_ENUMS.CUSTOMER);
+        user.addRole(role);
         return user;
     } catch (error) {
         if (error.name = "SequelizeValidationError") {
