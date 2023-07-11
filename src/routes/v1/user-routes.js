@@ -9,5 +9,7 @@ router.post("/signup", UserController.signup);
 
 router.post("/signin", authMiddleware.validateRequest ,UserController.signin);
 
+router.post("/role" , authMiddleware.checkAuth , authMiddleware.checkAdmin , UserController.addRoleToUser);
+
 
 module.exports = router;
