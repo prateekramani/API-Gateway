@@ -20,6 +20,7 @@ const app = express();
 app.use(limiter);
 app.use('/flightsService', createProxyMiddleware({ target: ServerConfig.FLIGHT_SERVICE, changeOrigin: true }));
 app.use('/bookingService', createProxyMiddleware({ target: ServerConfig.BOOKING_SERVICE, changeOrigin: true }));
+// can add an option to rename the path as well , in that case , no need to add routes in subsequent index files
 app.use(express.json()) //this is going to add a middleware for all the upcoming routes 
 app.use(express.urlencoded({extended : true })) // to read url endoded stuff in req body
 
